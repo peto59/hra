@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Movement : MonoBehaviour
+public class Movement : NetworkBehaviour
 {
     [SerializeField] CharacterController controller;
     [SerializeField] float speed = 11f;
@@ -15,8 +16,10 @@ public class Movement : MonoBehaviour
     [SerializeField] float jumpHeight = 3.5f;
     bool jump;
 
+    [Client]
     private void Update()
     {
+        //if (!hasAuthority) { return; }
         if (controller.isGrounded)
         {
             verticalVelocity.y = 0;

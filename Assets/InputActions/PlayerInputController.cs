@@ -109,18 +109,18 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
             ""id"": ""4532f000-d1ae-4c01-b9e3-ed7faf70fcf3"",
             ""actions"": [
                 {
-                    ""name"": ""LookX"",
+                    ""name"": ""Look"",
                     ""type"": ""PassThrough"",
                     ""id"": ""fb746852-4c62-4fac-b0e9-67830705af28"",
-                    ""expectedControlType"": ""Axis"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""LookY"",
+                    ""name"": ""Look1"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""10c89c2d-d830-4662-998e-dcb78bec1c2d"",
-                    ""expectedControlType"": ""Axis"",
+                    ""id"": ""4d0e2e10-a527-4951-99e5-9802c0da33de"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -129,22 +129,22 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""7a3dfda4-c4c7-4dfb-be5e-7c8879e255a6"",
-                    ""path"": ""<Mouse>/delta/x"",
+                    ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""LookX"",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""19ed63ae-5cbe-4423-b212-5662eacee16e"",
-                    ""path"": ""<Mouse>/position/y"",
+                    ""id"": ""5c2f0c6a-21a7-4c84-9cbe-52ccafe3df9a"",
+                    ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""LookY"",
+                    ""action"": ""Look1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -159,8 +159,8 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         m_GroundMovement_Jump = m_GroundMovement.FindAction("Jump", throwIfNotFound: true);
         // CameraMovement
         m_CameraMovement = asset.FindActionMap("CameraMovement", throwIfNotFound: true);
-        m_CameraMovement_LookX = m_CameraMovement.FindAction("LookX", throwIfNotFound: true);
-        m_CameraMovement_LookY = m_CameraMovement.FindAction("LookY", throwIfNotFound: true);
+        m_CameraMovement_Look = m_CameraMovement.FindAction("Look", throwIfNotFound: true);
+        m_CameraMovement_Look1 = m_CameraMovement.FindAction("Look1", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -251,14 +251,14 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
     // CameraMovement
     private readonly InputActionMap m_CameraMovement;
     private ICameraMovementActions m_CameraMovementActionsCallbackInterface;
-    private readonly InputAction m_CameraMovement_LookX;
-    private readonly InputAction m_CameraMovement_LookY;
+    private readonly InputAction m_CameraMovement_Look;
+    private readonly InputAction m_CameraMovement_Look1;
     public struct CameraMovementActions
     {
         private @PlayerInputController m_Wrapper;
         public CameraMovementActions(@PlayerInputController wrapper) { m_Wrapper = wrapper; }
-        public InputAction @LookX => m_Wrapper.m_CameraMovement_LookX;
-        public InputAction @LookY => m_Wrapper.m_CameraMovement_LookY;
+        public InputAction @Look => m_Wrapper.m_CameraMovement_Look;
+        public InputAction @Look1 => m_Wrapper.m_CameraMovement_Look1;
         public InputActionMap Get() { return m_Wrapper.m_CameraMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -268,22 +268,22 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_CameraMovementActionsCallbackInterface != null)
             {
-                @LookX.started -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLookX;
-                @LookX.performed -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLookX;
-                @LookX.canceled -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLookX;
-                @LookY.started -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLookY;
-                @LookY.performed -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLookY;
-                @LookY.canceled -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLookY;
+                @Look.started -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLook;
+                @Look1.started -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLook1;
+                @Look1.performed -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLook1;
+                @Look1.canceled -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLook1;
             }
             m_Wrapper.m_CameraMovementActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @LookX.started += instance.OnLookX;
-                @LookX.performed += instance.OnLookX;
-                @LookX.canceled += instance.OnLookX;
-                @LookY.started += instance.OnLookY;
-                @LookY.performed += instance.OnLookY;
-                @LookY.canceled += instance.OnLookY;
+                @Look.started += instance.OnLook;
+                @Look.performed += instance.OnLook;
+                @Look.canceled += instance.OnLook;
+                @Look1.started += instance.OnLook1;
+                @Look1.performed += instance.OnLook1;
+                @Look1.canceled += instance.OnLook1;
             }
         }
     }
@@ -295,7 +295,7 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
     }
     public interface ICameraMovementActions
     {
-        void OnLookX(InputAction.CallbackContext context);
-        void OnLookY(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
+        void OnLook1(InputAction.CallbackContext context);
     }
 }
