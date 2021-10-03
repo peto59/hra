@@ -102,14 +102,6 @@
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
-                },
-                {
-                    "name": "Look1",
-                    "type": "PassThrough",
-                    "id": "4d0e2e10-a527-4951-99e5-9802c0da33de",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -121,17 +113,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5c2f0c6a-21a7-4c84-9cbe-52ccafe3df9a",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Look1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -108,8 +108,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  sensitivityX: 600
-  go2: {fileID: 5042011665238967874}
+  sensitivityX: 500
+  sensitivityY: 400
+  yClamp: 70
+  virtualCamera: {fileID: 1271059358356576849}
+  pov: {fileID: 0}
 --- !u!114 &-5324043503382071181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,8 +303,8 @@ MonoBehaviour:
     Value: 0
     m_SpeedMode: 1
     m_MaxSpeed: 0.5
-    m_AccelTime: 0.1
-    m_DecelTime: 0.1
+    m_AccelTime: 0
+    m_DecelTime: 0
     m_InputAxisName: 
     m_InputAxisValue: 0
     m_InvertInput: 1
@@ -323,9 +326,9 @@ MonoBehaviour:
   m_HorizontalAxis:
     Value: 0
     m_SpeedMode: 1
-    m_MaxSpeed: 1
-    m_AccelTime: 0.1
-    m_DecelTime: 0.1
+    m_MaxSpeed: 0.5
+    m_AccelTime: 0
+    m_DecelTime: 0
     m_InputAxisName: 
     m_InputAxisValue: 0
     m_InvertInput: 0
@@ -384,13 +387,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4237967647052945842}
-  m_LocalRotation: {x: 0, y: 0, z: -0.24454597, w: 0.96963775}
+  m_LocalRotation: {x: 0, y: 0, z: -0.6892403, w: 0.7245329}
   m_LocalPosition: {x: -0.621, y: -0.045, z: 0.045}
   m_LocalScale: {x: 0.1, y: 1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 1541754943089352990}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -28.31}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -87.14}
 --- !u!33 &7424332327070445168
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -465,7 +468,6 @@ GameObject:
   - component: {fileID: 58716326163778869}
   - component: {fileID: 1271059358356576849}
   - component: {fileID: 7014506937043059030}
-  - component: {fileID: 4597591079751579061}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: Untagged
@@ -506,7 +508,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 0
-  m_LookAt: {fileID: 0}
+  m_LookAt: {fileID: 1541754944119361868}
   m_Follow: {fileID: 1541754944119361868}
   m_Lens:
     FieldOfView: 40
@@ -556,21 +558,6 @@ MonoBehaviour:
   m_Damping: 0
   m_DampingWhenOccluded: 0
   m_OptimalTargetDistance: 0
---- !u!114 &4597591079751579061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5042011665238967874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb7194dc27b9df64c8beca7482ee8e0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerIndex: -1
-  XYAxis: {fileID: -6197788911753253002, guid: eb9f6c4b26e4f9e439dc0afaccd99bae, type: 3}
-  ZAxis: {fileID: 0}
 --- !u!1 &7503326533678212040
 GameObject:
   m_ObjectHideFlags: 0

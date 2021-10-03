@@ -6,18 +6,36 @@ using Cinemachine;
 
 public class MouseLook : NetworkBehaviour
 {
-    [SerializeField] float sensitivityX = 8f;
-    float mouseX;
+    [SerializeField] public float sensitivityX = 8f;
+    [SerializeField] float sensitivityY = 0.5f;
+    [SerializeField] float yClamp = 70f;
 
-    private void Start()
+    [SerializeField] CinemachineVirtualCamera virtualCamera = null;
+    public CinemachinePOV pov;
+
+    float mouseX;
+    float mouseY;
+
+    public override void OnStartAuthority()
     {
-        //playerCamera = GameObject.Find("Camer").transform;
+        pov = virtualCamera.GetCinemachineComponent<CinemachinePOV>();
     }
 
     [Client]
     private void Update()
     {
-        transform.Rotate(Vector3.up, mouseX * Time.deltaTime);
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
+        GameObject cam = GameObject.Find("MainCamera");
+        //transform.rotation = cam.GetComponent<CinemachineBrain>().ActiveVirtualCamera.State.RawOrientation;
+        //print(cam.GetComponent<CinemachineBrain>().ActiveVirtualCamera.State.FinalOrientation.y);
+        //Vector3 newRotation = new Vector3(cam.eulerAngles.x, cam.eulerAngles.x, cam.eulerAngles.z);
+        //print("new" + newRotation);
+        //print("old" + transform.rotation.eulerAngles);
+        //gameObject.transform.eulerAngles = newRotation;
+
+        transform.Rotate(0f, mouseX * Time.deltaTime, 0f);
+        //transform.eulerAngles = cam.rotation.eulerAngles;
         //print(mouseX);
 
         /*yRotation = -mouseY;
@@ -26,13 +44,16 @@ public class MouseLook : NetworkBehaviour
         Vector3 targetRotation = transform.eulerAngles;
         targetRotation.x = yRotation;
         playerCamera.eulerAngles = targetRotation;*/
-        /*float followOffset = Mathf.Clamp(transposer.m_FollowOffset.y - (mouseY * deltaTime), -yClamp, yClamp);
-        transposer.m_FollowOffset.y = followOffset;*/
+        print(yClamp);
+        float followOffset = Mathf.Clamp(pov.m_VerticalAxis.Value - (mouseY * Time.deltaTime), -yClamp, yClamp);
+        print(followOffset);
+        pov.m_VerticalAxis.Value = followOffset;
     }
 
     public void ReceiveInput(Vector2 mouseInput)
     {
         mouseX = mouseInput.x * sensitivityX;
+        mouseY = mouseInput.y * sensitivityY;
         //print(mouseY);
     }
 }

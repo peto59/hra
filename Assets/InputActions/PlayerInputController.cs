@@ -115,14 +115,6 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
-                },
-                {
-                    ""name"": ""Look1"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""4d0e2e10-a527-4951-99e5-9802c0da33de"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -134,17 +126,6 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5c2f0c6a-21a7-4c84-9cbe-52ccafe3df9a"",
-                    ""path"": ""<Mouse>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -160,7 +141,6 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         // CameraMovement
         m_CameraMovement = asset.FindActionMap("CameraMovement", throwIfNotFound: true);
         m_CameraMovement_Look = m_CameraMovement.FindAction("Look", throwIfNotFound: true);
-        m_CameraMovement_Look1 = m_CameraMovement.FindAction("Look1", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -252,13 +232,11 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
     private readonly InputActionMap m_CameraMovement;
     private ICameraMovementActions m_CameraMovementActionsCallbackInterface;
     private readonly InputAction m_CameraMovement_Look;
-    private readonly InputAction m_CameraMovement_Look1;
     public struct CameraMovementActions
     {
         private @PlayerInputController m_Wrapper;
         public CameraMovementActions(@PlayerInputController wrapper) { m_Wrapper = wrapper; }
         public InputAction @Look => m_Wrapper.m_CameraMovement_Look;
-        public InputAction @Look1 => m_Wrapper.m_CameraMovement_Look1;
         public InputActionMap Get() { return m_Wrapper.m_CameraMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -271,9 +249,6 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                 @Look.started -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLook;
                 @Look.performed -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLook;
                 @Look.canceled -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLook;
-                @Look1.started -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLook1;
-                @Look1.performed -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLook1;
-                @Look1.canceled -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnLook1;
             }
             m_Wrapper.m_CameraMovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -281,9 +256,6 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
-                @Look1.started += instance.OnLook1;
-                @Look1.performed += instance.OnLook1;
-                @Look1.canceled += instance.OnLook1;
             }
         }
     }
@@ -296,6 +268,5 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
     public interface ICameraMovementActions
     {
         void OnLook(InputAction.CallbackContext context);
-        void OnLook1(InputAction.CallbackContext context);
     }
 }

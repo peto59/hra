@@ -40,6 +40,7 @@ public class InputManager : NetworkBehaviour
         enabled = true;
     }
 
+    [Client]
     private void Update()
     {
         if (!hasAuthority) { return; }
