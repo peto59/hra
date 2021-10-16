@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<gun name="Famas">
+	<fireRate>0.06</fireRate>
+	<ammo>25</ammo>
+	<recoil>2.5</recoil>
+	<modes>
+		<Burst>true</Burst>
+		<Auto>true</Auto>
+	</modes>
+	<BurstSize>3</BurstSize>
+	<upgrades></upgrades>
+</gun>

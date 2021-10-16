@@ -33,6 +33,22 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""68b1a5e3-cb54-4f33-8e54-b4096de81062"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Run"",
+                    ""type"": ""Button"",
+                    ""id"": ""09d4c929-d6c5-4618-a8f8-d67e2fa95203"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -101,6 +117,28 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""68038afa-eaaf-4d70-85b0-edefe56dc800"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""af9bdd0b-7009-4626-a9d9-b02d6f8723c3"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -130,6 +168,71 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Shooting"",
+            ""id"": ""3d26a4c5-4b7d-4b97-95bc-84aa29c35147"",
+            ""actions"": [
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""1a2a54ee-f849-4ca0-9dbc-44a23936ac2f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ChangeMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""c13258b4-348d-43b5-8a57-e604a47bb734"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""b35f900c-ef9a-4bb0-aaba-5261c7c63a10"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""5ccdc5a9-3a08-4469-9bd1-6de6ecbd944d"",
+                    ""path"": ""<Mouse>/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7d360de1-1b35-4fc0-8a95-1285229877a4"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61bd004f-24e7-4cf0-8956-097e732284e2"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -138,9 +241,16 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         m_GroundMovement = asset.FindActionMap("GroundMovement", throwIfNotFound: true);
         m_GroundMovement_HorizontalMovement = m_GroundMovement.FindAction("HorizontalMovement", throwIfNotFound: true);
         m_GroundMovement_Jump = m_GroundMovement.FindAction("Jump", throwIfNotFound: true);
+        m_GroundMovement_Crouch = m_GroundMovement.FindAction("Crouch", throwIfNotFound: true);
+        m_GroundMovement_Run = m_GroundMovement.FindAction("Run", throwIfNotFound: true);
         // CameraMovement
         m_CameraMovement = asset.FindActionMap("CameraMovement", throwIfNotFound: true);
         m_CameraMovement_Look = m_CameraMovement.FindAction("Look", throwIfNotFound: true);
+        // Shooting
+        m_Shooting = asset.FindActionMap("Shooting", throwIfNotFound: true);
+        m_Shooting_Shoot = m_Shooting.FindAction("Shoot", throwIfNotFound: true);
+        m_Shooting_ChangeMode = m_Shooting.FindAction("ChangeMode", throwIfNotFound: true);
+        m_Shooting_Reload = m_Shooting.FindAction("Reload", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -192,12 +302,16 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
     private IGroundMovementActions m_GroundMovementActionsCallbackInterface;
     private readonly InputAction m_GroundMovement_HorizontalMovement;
     private readonly InputAction m_GroundMovement_Jump;
+    private readonly InputAction m_GroundMovement_Crouch;
+    private readonly InputAction m_GroundMovement_Run;
     public struct GroundMovementActions
     {
         private @PlayerInputController m_Wrapper;
         public GroundMovementActions(@PlayerInputController wrapper) { m_Wrapper = wrapper; }
         public InputAction @HorizontalMovement => m_Wrapper.m_GroundMovement_HorizontalMovement;
         public InputAction @Jump => m_Wrapper.m_GroundMovement_Jump;
+        public InputAction @Crouch => m_Wrapper.m_GroundMovement_Crouch;
+        public InputAction @Run => m_Wrapper.m_GroundMovement_Run;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -213,6 +327,12 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnJump;
+                @Crouch.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnCrouch;
+                @Crouch.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnCrouch;
+                @Crouch.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnCrouch;
+                @Run.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnRun;
+                @Run.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnRun;
+                @Run.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnRun;
             }
             m_Wrapper.m_GroundMovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -223,6 +343,12 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @Crouch.started += instance.OnCrouch;
+                @Crouch.performed += instance.OnCrouch;
+                @Crouch.canceled += instance.OnCrouch;
+                @Run.started += instance.OnRun;
+                @Run.performed += instance.OnRun;
+                @Run.canceled += instance.OnRun;
             }
         }
     }
@@ -260,13 +386,70 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         }
     }
     public CameraMovementActions @CameraMovement => new CameraMovementActions(this);
+
+    // Shooting
+    private readonly InputActionMap m_Shooting;
+    private IShootingActions m_ShootingActionsCallbackInterface;
+    private readonly InputAction m_Shooting_Shoot;
+    private readonly InputAction m_Shooting_ChangeMode;
+    private readonly InputAction m_Shooting_Reload;
+    public struct ShootingActions
+    {
+        private @PlayerInputController m_Wrapper;
+        public ShootingActions(@PlayerInputController wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Shoot => m_Wrapper.m_Shooting_Shoot;
+        public InputAction @ChangeMode => m_Wrapper.m_Shooting_ChangeMode;
+        public InputAction @Reload => m_Wrapper.m_Shooting_Reload;
+        public InputActionMap Get() { return m_Wrapper.m_Shooting; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ShootingActions set) { return set.Get(); }
+        public void SetCallbacks(IShootingActions instance)
+        {
+            if (m_Wrapper.m_ShootingActionsCallbackInterface != null)
+            {
+                @Shoot.started -= m_Wrapper.m_ShootingActionsCallbackInterface.OnShoot;
+                @Shoot.performed -= m_Wrapper.m_ShootingActionsCallbackInterface.OnShoot;
+                @Shoot.canceled -= m_Wrapper.m_ShootingActionsCallbackInterface.OnShoot;
+                @ChangeMode.started -= m_Wrapper.m_ShootingActionsCallbackInterface.OnChangeMode;
+                @ChangeMode.performed -= m_Wrapper.m_ShootingActionsCallbackInterface.OnChangeMode;
+                @ChangeMode.canceled -= m_Wrapper.m_ShootingActionsCallbackInterface.OnChangeMode;
+                @Reload.started -= m_Wrapper.m_ShootingActionsCallbackInterface.OnReload;
+                @Reload.performed -= m_Wrapper.m_ShootingActionsCallbackInterface.OnReload;
+                @Reload.canceled -= m_Wrapper.m_ShootingActionsCallbackInterface.OnReload;
+            }
+            m_Wrapper.m_ShootingActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Shoot.started += instance.OnShoot;
+                @Shoot.performed += instance.OnShoot;
+                @Shoot.canceled += instance.OnShoot;
+                @ChangeMode.started += instance.OnChangeMode;
+                @ChangeMode.performed += instance.OnChangeMode;
+                @ChangeMode.canceled += instance.OnChangeMode;
+                @Reload.started += instance.OnReload;
+                @Reload.performed += instance.OnReload;
+                @Reload.canceled += instance.OnReload;
+            }
+        }
+    }
+    public ShootingActions @Shooting => new ShootingActions(this);
     public interface IGroundMovementActions
     {
         void OnHorizontalMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
+        void OnRun(InputAction.CallbackContext context);
     }
     public interface ICameraMovementActions
     {
         void OnLook(InputAction.CallbackContext context);
+    }
+    public interface IShootingActions
+    {
+        void OnShoot(InputAction.CallbackContext context);
+        void OnChangeMode(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
 }

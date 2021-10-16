@@ -6,6 +6,7 @@ using Cinemachine;
 
 public class MouseLook : NetworkBehaviour
 {
+
     [SerializeField] public float sensitivityX = 8f;
     [SerializeField] float sensitivityY = 0.5f;
     [SerializeField] float yClamp = 70f;
@@ -16,6 +17,8 @@ public class MouseLook : NetworkBehaviour
     float mouseX;
     float mouseY;
 
+    float recoil;
+
     public override void OnStartAuthority()
     {
         pov = virtualCamera.GetCinemachineComponent<CinemachinePOV>();
@@ -24,29 +27,12 @@ public class MouseLook : NetworkBehaviour
     [Client]
     private void Update()
     {
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        GameObject cam = GameObject.Find("MainCamera");
-        //transform.rotation = cam.GetComponent<CinemachineBrain>().ActiveVirtualCamera.State.RawOrientation;
-        //print(cam.GetComponent<CinemachineBrain>().ActiveVirtualCamera.State.FinalOrientation.y);
-        //Vector3 newRotation = new Vector3(cam.eulerAngles.x, cam.eulerAngles.x, cam.eulerAngles.z);
-        //print("new" + newRotation);
-        //print("old" + transform.rotation.eulerAngles);
-        //gameObject.transform.eulerAngles = newRotation;
 
         transform.Rotate(0f, mouseX * Time.deltaTime, 0f);
-        //transform.eulerAngles = cam.rotation.eulerAngles;
-        //print(mouseX);
 
-        /*yRotation = -mouseY;
-        yRotation = Mathf.Clamp(yRotation, -yClamp, yClamp);
-        
-        Vector3 targetRotation = transform.eulerAngles;
-        targetRotation.x = yRotation;
-        playerCamera.eulerAngles = targetRotation;*/
-        print(yClamp);
         float followOffset = Mathf.Clamp(pov.m_VerticalAxis.Value - (mouseY * Time.deltaTime), -yClamp, yClamp);
-        print(followOffset);
         pov.m_VerticalAxis.Value = followOffset;
     }
 
@@ -54,6 +40,5 @@ public class MouseLook : NetworkBehaviour
     {
         mouseX = mouseInput.x * sensitivityX;
         mouseY = mouseInput.y * sensitivityY;
-        //print(mouseY);
     }
 }

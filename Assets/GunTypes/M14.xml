@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<gun name="M14">
+	<fireRate>0.09</fireRate>
+	<ammo>20</ammo>
+	<recoil>5</recoil>
+	<modes>
+		<Semi>true</Semi>
+		<Auto>true</Auto>
+	</modes>
+	<upgrades></upgrades>
+</gun>
