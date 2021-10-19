@@ -2,7 +2,7 @@
 <gun name="Famas">
 	<fireRate>0.06</fireRate>
 	<ammo>25</ammo>
-	<recoil>3</recoil>
+	<recoil>4</recoil>
 	<modes>
 		<Burst>true</Burst>
 		<Auto>true</Auto>
