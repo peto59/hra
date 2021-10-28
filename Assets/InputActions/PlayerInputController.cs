@@ -49,6 +49,14 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Prone"",
+                    ""type"": ""Button"",
+                    ""id"": ""465d4a8d-6d15-49ac-8ba1-b97e6502d2e3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -139,6 +147,17 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3c830090-ccba-4d1f-9d5b-26e76640f5d9"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Prone"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -196,6 +215,14 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Button"",
+                    ""id"": ""09408734-82c0-4b1a-9c78-fa41e548689e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -231,6 +258,17 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d0996c8-e45e-4ddd-b58b-72a884d8a367"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -243,6 +281,7 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         m_GroundMovement_Jump = m_GroundMovement.FindAction("Jump", throwIfNotFound: true);
         m_GroundMovement_Crouch = m_GroundMovement.FindAction("Crouch", throwIfNotFound: true);
         m_GroundMovement_Run = m_GroundMovement.FindAction("Run", throwIfNotFound: true);
+        m_GroundMovement_Prone = m_GroundMovement.FindAction("Prone", throwIfNotFound: true);
         // CameraMovement
         m_CameraMovement = asset.FindActionMap("CameraMovement", throwIfNotFound: true);
         m_CameraMovement_Look = m_CameraMovement.FindAction("Look", throwIfNotFound: true);
@@ -251,6 +290,7 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         m_Shooting_Shoot = m_Shooting.FindAction("Shoot", throwIfNotFound: true);
         m_Shooting_ChangeMode = m_Shooting.FindAction("ChangeMode", throwIfNotFound: true);
         m_Shooting_Reload = m_Shooting.FindAction("Reload", throwIfNotFound: true);
+        m_Shooting_Zoom = m_Shooting.FindAction("Zoom", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -304,6 +344,7 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
     private readonly InputAction m_GroundMovement_Jump;
     private readonly InputAction m_GroundMovement_Crouch;
     private readonly InputAction m_GroundMovement_Run;
+    private readonly InputAction m_GroundMovement_Prone;
     public struct GroundMovementActions
     {
         private @PlayerInputController m_Wrapper;
@@ -312,6 +353,7 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_GroundMovement_Jump;
         public InputAction @Crouch => m_Wrapper.m_GroundMovement_Crouch;
         public InputAction @Run => m_Wrapper.m_GroundMovement_Run;
+        public InputAction @Prone => m_Wrapper.m_GroundMovement_Prone;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -333,6 +375,9 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                 @Run.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnRun;
                 @Run.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnRun;
                 @Run.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnRun;
+                @Prone.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnProne;
+                @Prone.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnProne;
+                @Prone.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnProne;
             }
             m_Wrapper.m_GroundMovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -349,6 +394,9 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                 @Run.started += instance.OnRun;
                 @Run.performed += instance.OnRun;
                 @Run.canceled += instance.OnRun;
+                @Prone.started += instance.OnProne;
+                @Prone.performed += instance.OnProne;
+                @Prone.canceled += instance.OnProne;
             }
         }
     }
@@ -393,6 +441,7 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
     private readonly InputAction m_Shooting_Shoot;
     private readonly InputAction m_Shooting_ChangeMode;
     private readonly InputAction m_Shooting_Reload;
+    private readonly InputAction m_Shooting_Zoom;
     public struct ShootingActions
     {
         private @PlayerInputController m_Wrapper;
@@ -400,6 +449,7 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         public InputAction @Shoot => m_Wrapper.m_Shooting_Shoot;
         public InputAction @ChangeMode => m_Wrapper.m_Shooting_ChangeMode;
         public InputAction @Reload => m_Wrapper.m_Shooting_Reload;
+        public InputAction @Zoom => m_Wrapper.m_Shooting_Zoom;
         public InputActionMap Get() { return m_Wrapper.m_Shooting; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -418,6 +468,9 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                 @Reload.started -= m_Wrapper.m_ShootingActionsCallbackInterface.OnReload;
                 @Reload.performed -= m_Wrapper.m_ShootingActionsCallbackInterface.OnReload;
                 @Reload.canceled -= m_Wrapper.m_ShootingActionsCallbackInterface.OnReload;
+                @Zoom.started -= m_Wrapper.m_ShootingActionsCallbackInterface.OnZoom;
+                @Zoom.performed -= m_Wrapper.m_ShootingActionsCallbackInterface.OnZoom;
+                @Zoom.canceled -= m_Wrapper.m_ShootingActionsCallbackInterface.OnZoom;
             }
             m_Wrapper.m_ShootingActionsCallbackInterface = instance;
             if (instance != null)
@@ -431,6 +484,9 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                 @Reload.started += instance.OnReload;
                 @Reload.performed += instance.OnReload;
                 @Reload.canceled += instance.OnReload;
+                @Zoom.started += instance.OnZoom;
+                @Zoom.performed += instance.OnZoom;
+                @Zoom.canceled += instance.OnZoom;
             }
         }
     }
@@ -441,6 +497,7 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+        void OnProne(InputAction.CallbackContext context);
     }
     public interface ICameraMovementActions
     {
@@ -451,5 +508,6 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnChangeMode(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
     }
 }
