@@ -271,6 +271,33 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""QuickActions"",
+            ""id"": ""51cb8bf4-fe77-419d-8d3c-7eaea5393a10"",
+            ""actions"": [
+                {
+                    ""name"": ""QuickHeal"",
+                    ""type"": ""Button"",
+                    ""id"": ""fc6006f2-a2a0-433a-81df-f43ce8ce08ea"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.5)""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""528921ca-df2e-4996-bcd3-65334ebd0bfc"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickHeal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -291,6 +318,9 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         m_Shooting_ChangeMode = m_Shooting.FindAction("ChangeMode", throwIfNotFound: true);
         m_Shooting_Reload = m_Shooting.FindAction("Reload", throwIfNotFound: true);
         m_Shooting_Zoom = m_Shooting.FindAction("Zoom", throwIfNotFound: true);
+        // QuickActions
+        m_QuickActions = asset.FindActionMap("QuickActions", throwIfNotFound: true);
+        m_QuickActions_QuickHeal = m_QuickActions.FindAction("QuickHeal", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -491,6 +521,39 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         }
     }
     public ShootingActions @Shooting => new ShootingActions(this);
+
+    // QuickActions
+    private readonly InputActionMap m_QuickActions;
+    private IQuickActionsActions m_QuickActionsActionsCallbackInterface;
+    private readonly InputAction m_QuickActions_QuickHeal;
+    public struct QuickActionsActions
+    {
+        private @PlayerInputController m_Wrapper;
+        public QuickActionsActions(@PlayerInputController wrapper) { m_Wrapper = wrapper; }
+        public InputAction @QuickHeal => m_Wrapper.m_QuickActions_QuickHeal;
+        public InputActionMap Get() { return m_Wrapper.m_QuickActions; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(QuickActionsActions set) { return set.Get(); }
+        public void SetCallbacks(IQuickActionsActions instance)
+        {
+            if (m_Wrapper.m_QuickActionsActionsCallbackInterface != null)
+            {
+                @QuickHeal.started -= m_Wrapper.m_QuickActionsActionsCallbackInterface.OnQuickHeal;
+                @QuickHeal.performed -= m_Wrapper.m_QuickActionsActionsCallbackInterface.OnQuickHeal;
+                @QuickHeal.canceled -= m_Wrapper.m_QuickActionsActionsCallbackInterface.OnQuickHeal;
+            }
+            m_Wrapper.m_QuickActionsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @QuickHeal.started += instance.OnQuickHeal;
+                @QuickHeal.performed += instance.OnQuickHeal;
+                @QuickHeal.canceled += instance.OnQuickHeal;
+            }
+        }
+    }
+    public QuickActionsActions @QuickActions => new QuickActionsActions(this);
     public interface IGroundMovementActions
     {
         void OnHorizontalMovement(InputAction.CallbackContext context);
@@ -509,5 +572,9 @@ public class @PlayerInputController : IInputActionCollection, IDisposable
         void OnChangeMode(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
+    }
+    public interface IQuickActionsActions
+    {
+        void OnQuickHeal(InputAction.CallbackContext context);
     }
 }

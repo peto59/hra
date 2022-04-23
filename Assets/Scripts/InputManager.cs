@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.Interactions;
 using Mirror;
 using Mirror.Discovery;
 using Mirror.Authenticators;
@@ -12,6 +13,7 @@ public class InputManager : NetworkBehaviour
 
     [SerializeField] Movement movement;
     [SerializeField] MouseLook mouseLook;
+    [SerializeField] PlayerHealth playerHealth;
 
     [SerializeField] GameObject gun;
     Shooting shooting;
@@ -22,6 +24,7 @@ public class InputManager : NetworkBehaviour
     PlayerInputController.GroundMovementActions GroundMovement;
     PlayerInputController.CameraMovementActions CameraMovement;
     PlayerInputController.ShootingActions ShootingAction;
+    PlayerInputController.QuickActionsActions QuickActions;
 
     Vector2 horizontalInput;
     Vector2 mouseInput;
@@ -35,6 +38,7 @@ public class InputManager : NetworkBehaviour
         GroundMovement = PIC.GroundMovement;
         CameraMovement = PIC.CameraMovement;
         ShootingAction = PIC.Shooting;
+        QuickActions = PIC.QuickActions;
 
         GroundMovement.HorizontalMovement.performed += ctx => horizontalInput = ctx.ReadValue<Vector2>();
         GroundMovement.Jump.performed += _ => movement.OnJumpPressed();
@@ -49,6 +53,13 @@ public class InputManager : NetworkBehaviour
         ShootingAction.Shoot.canceled += _ => shooting.Release();
         ShootingAction.ChangeMode.performed += _ => shooting.ChangeMode();
         ShootingAction.Reload.performed += _ => shooting.Reload();
+
+        QuickActions.QuickHeal.performed += ctx => {
+            if (ctx.interaction is HoldInteraction)
+            {
+                playerHealth.QuickHeal();
+            }
+        };
     }
 
     public override void OnStartAuthority()

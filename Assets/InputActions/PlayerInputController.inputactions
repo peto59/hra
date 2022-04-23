@@ -258,6 +258,33 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "QuickActions",
+            "id": "51cb8bf4-fe77-419d-8d3c-7eaea5393a10",
+            "actions": [
+                {
+                    "name": "QuickHeal",
+                    "type": "Button",
+                    "id": "fc6006f2-a2a0-433a-81df-f43ce8ce08ea",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.5)"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "528921ca-df2e-4996-bcd3-65334ebd0bfc",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuickHeal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Mirror;
 
@@ -7,6 +8,7 @@ public class Movement : NetworkBehaviour
 {
 
     [SerializeField] CharacterController controller;
+    [SerializeField] PlayerHealth playerHealth;
 
     float originalHeight;
     [SerializeField] float crouchHeight = 1f;
@@ -30,11 +32,12 @@ public class Movement : NetworkBehaviour
     bool run = false;
     bool running = false;
 
-    float distToGround;
+    float groundedRaycastDistance;
+    float distToGround = 0f;
 
     private void Start()
     {
-        distToGround = controller.bounds.extents.y;
+        groundedRaycastDistance = controller.bounds.extents.y;
         originalHeight = controller.height;
         speed = originalSpeed;
         stamina = maxStamina;
@@ -51,26 +54,38 @@ public class Movement : NetworkBehaviour
                 verticalVelocity.y = Mathf.Sqrt(-2 * jumpHeight * gravity);
             }
             jump = false;
+            if(distToGround > 10f)
+            {
+                int dmg = Convert.ToInt32(distToGround);
+                playerHealth.Hit(dmg, "fall");
+                print("fall damage");
+            }
+            distToGround = 0f;
         }
         else
         {
+            Physics.Raycast(transform.position, -Vector3.up, out RaycastHit hit, Mathf.Infinity);
+            if (hit.distance > distToGround)
+            {
+                distToGround = hit.distance;
+            }
             jump = false;
         }
         
         if (crouch)
         {
             controller.height = Mathf.Clamp(controller.height-(Time.deltaTime*2), crouchHeight, originalHeight);
-            distToGround = controller.bounds.extents.y;
+            groundedRaycastDistance = controller.bounds.extents.y;
 
         }                                               //raycast to check if we can uncrouch (if something is above us) inverted because if something is above us returns true
         else if (controller.height != originalHeight && !Physics.Raycast(transform.position, Vector3.up, originalHeight - controller.height))
         {
             controller.height = Mathf.Clamp(controller.height + (Time.deltaTime * 2), crouchHeight, originalHeight);
             controller.Move(new Vector3(0, Time.deltaTime * 2, 0));
-            distToGround = controller.bounds.extents.y;
+            groundedRaycastDistance = controller.bounds.extents.y;
         }
 
-        if (run)
+        if (run && !crouch && horizontalInput != Vector2.zero)
         {
             if (stamina > maxStamina / 5)
             {
@@ -93,7 +108,7 @@ public class Movement : NetworkBehaviour
                 speed = originalSpeed;
             }
         }
-        else if (stamina < 100)
+        else if (stamina < maxStamina)
         {
             if (horizontalInput == Vector2.zero)
             {
@@ -150,6 +165,6 @@ public class Movement : NetworkBehaviour
 
     public bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+        return Physics.Raycast(transform.position, -Vector3.up, groundedRaycastDistance + 0.1f);
     }
 }
